@@ -22,6 +22,7 @@ Create a virtual environment named 'BioBert39' with python 3.9 and ‘BioBert312
    python3 train_distilbert.py
 5. zip -r distilbert-symptom-ner.zip ./ (Or zip file manually)
 6. In BioBert39 environment run streamlit with python 3.9
+
    streamlit run streamlit_app.py
 
 Hosting on Streamlit cloud:
