@@ -12,7 +12,9 @@ The 3 python files currently are not running in the same python version due to c
 
 Create a virtual environment named 'BioBert39' with python 3.9 and ‘BioBert312’ with python 3.12
 1. python3 -m venv BioBert39
+
    source BioBert39/bin/activate
+
    Similar for BioBert312
 
 2. pip3 install -r requirements.txt
