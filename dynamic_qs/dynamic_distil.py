@@ -6,10 +6,17 @@ import re
 import torch
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 
+import subprocess
+
 # Load spaCy English model
 @st.cache_resource
 def load_spacy_model():
-    return spacy.load('en_core_web_sm')
+    try:
+        return spacy.load('en_core_web_sm')
+    except OSError:
+        # If the model is not present, download it
+        subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+        return spacy.load('en_core_web_sm')
 
 nlp = load_spacy_model()
 
