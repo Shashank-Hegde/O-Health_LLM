@@ -116,7 +116,6 @@ def extract_factors(text):
         factors.append('recent travel')
     return list(set(factors))
 
-# Function to generate dynamic questions using LLM
 def generate_dynamic_questions(symptoms, provided_params, num_questions=5):
     questions = []
     known_info = ''
@@ -133,16 +132,30 @@ def generate_dynamic_questions(symptoms, provided_params, num_questions=5):
         factors = ', '.join(provided_params['factors'])
         known_info += f" Relevant factors include: {factors}."
 
+    # Predefined question templates for symptoms
+    symptom_questions = {
+        'cough': [
+            "Can you describe your cough? Is it dry or productive?",
+            "Are you coughing up any mucus or phlegm?",
+            "Does anything make your cough better or worse?",
+            "Have you noticed any triggers for your cough?",
+        ],
+        'fever': [
+            "What is your current temperature?",
+            "Have you experienced any chills or sweating?",
+            "Is the fever constant or does it come and go?",
+            "Have you taken any medication to reduce the fever?",
+        ],
+        # Add more symptoms and their corresponding questions as needed
+    }
+
     for symptom in symptoms:
-        prompt = f"As a medical assistant, generate a question to gather more information about the patient's {symptom}.{known_info} Avoid asking about already provided information."
-        # Generate text using the model
-        response = text_generator(prompt, max_length=50, num_return_sequences=1, no_repeat_ngram_size=2)
-        question = response[0]['generated_text'].strip().split('\n')[0]
-        # Ensure it's a question
-        if not question.endswith('?'):
-            question += '?'
-        if question not in questions:
-            questions.append(question)
+        if symptom in symptom_questions:
+            for question in symptom_questions[symptom]:
+                if question not in questions:
+                    questions.append(question)
+                if len(questions) >= num_questions:
+                    break
         if len(questions) >= num_questions:
             break
 
@@ -151,7 +164,7 @@ def generate_dynamic_questions(symptoms, provided_params, num_questions=5):
         "Is there any other information you'd like to share about your condition?",
         "Are there any activities or situations that make your symptoms better or worse?",
         "Have you experienced similar symptoms in the past?",
-        "Do you have any other symptoms that we haven't discussed?"
+        "Do you have any other symptoms that we haven't discussed?",
     ]
     for prompt in general_prompts:
         if len(questions) >= num_questions:
@@ -160,6 +173,7 @@ def generate_dynamic_questions(symptoms, provided_params, num_questions=5):
             questions.append(prompt)
 
     return questions[:num_questions]
+
 
 # Function to infer possible reasons
 def infer_reasons(transcript, answers):
