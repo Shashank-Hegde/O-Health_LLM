@@ -1,9 +1,6 @@
-torch==2.2.0
-transformers==4.31.0
-datasets==2.14.5
-evaluate==0.4.0
 streamlit==1.26.0
-requests==2.31.0
-numpy==1.23.5
-spacy==3.5.3
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0-py3-none-any.whl
+spacy==3.5.2
+en-core-web-sm==3.5.0
+torch==1.13.1
+transformers==4.26.1
+tokenizers==0.13.2
